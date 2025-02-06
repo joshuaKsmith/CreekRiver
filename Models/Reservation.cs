@@ -7,6 +7,6 @@ public class Reservation
     public Campsite Campsite { get; set; }
     public int UserProfileId { get; set; }
     public UserProfile UserProfile { get; set; }
-    public DateTime CheckinDate { get; set; }
-    public DateTime CheckoutDate { get; set; }
+    public DateTime? CheckinDate { get; set; }
+    public DateTime? CheckoutDate { get; set; }
 }
