@@ -45,6 +45,31 @@ app.MapGet("/api/campsites", (CreekRiverDbContext db) =>
     }).ToList();
 });
 
+app.MapGet("/api/campsites/{id}", (CreekRiverDbContext db, int id) =>
+{
+    var campsite = db.Campsites
+        .Include(c => c.CampsiteType)
+        .Where(c => c.Id == id)
+        .Select(c => new CampsiteDTO
+        {
+            Id = c.Id,
+            Nickname = c.Nickname,
+            CampsiteTypeId = c.CampsiteTypeId,
+            CampsiteType = new CampsiteTypeDTO
+            {
+                Id = c.CampsiteType.Id,
+                CampsiteTypeName = c.CampsiteType.CampsiteTypeName,
+                FeePerNight = c.CampsiteType.FeePerNight,
+                MaxReservationDays = c.CampsiteType.MaxReservationDays
+            }
+        })
+        .FirstOrDefault();
+    if (campsite == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(campsite);
+});
 
 
 //////////////////////////////////////////////////////////////////////
